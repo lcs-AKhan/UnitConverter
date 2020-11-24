@@ -18,8 +18,13 @@ struct ContentView: View {
     
     @State private var unitConversion = 1
     
-    let conversions = ["Cm->Inches","Km->Miles","Celsius->Farenheit"]
-    @State private var chosenConverter = "Cm->Inches"
+    let conversions = ["Inches->Meters","Km->Meters","Cm->Meters","Mm->Meters","Miles->Meters"]
+    @State private var chosenConverter = "Inches->Meters"
+    
+    @State private var conversionInputString = ""
+    @State private var conversionInput: Double = 0
+    
+    @State private var conversionOutput: Double = 0
     
     var body: some View {
         NavigationView {
@@ -33,10 +38,36 @@ struct ContentView: View {
                 }
                 
                 Section {
-                    Text("Conversion: \(unitConversion)")
+                    Text("Conversion: \(conversions[unitConversion])")
+                    TextField("Enter Value You Want To Convert", text: $conversionInputString )
+                    Button(action: {
+                        ConversionsProcess()
+                    }) {
+                        Text("Convert")
+                    }
+                }
+                Section {
+                    Text("Output: \(conversionOutput, specifier: "%.2f")")
                 }
             }
             .navigationTitle("Unit Converter")
+        }
+    }
+    func ConvertToDouble() {
+        conversionInput = Double(conversionInputString) ?? 0
+    }
+    func ConversionsProcess() {
+        ConvertToDouble()
+        if unitConversion == 0 {
+            conversionOutput = conversionInput * 0.0254
+        } else if unitConversion == 1 {
+            conversionOutput = conversionInput * 100
+        } else if unitConversion == 2 {
+            conversionOutput = conversionInput/100
+        } else if unitConversion == 3 {
+            conversionOutput = conversionInput/1000
+        } else if unitConversion == 4 {
+            conversionOutput = conversionInput * 1609.34
         }
     }
 }
