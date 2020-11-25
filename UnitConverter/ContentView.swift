@@ -20,6 +20,8 @@ struct ContentView: View {
     @State private var category = 0
     let categories = ["Distance","Temperature"]
     
+    @State private var distanceOrNot: Bool = true
+    
     @State private var distanceConversion = 1
     
     let distanceConversions = ["Inches->Meters","Km->Meters","Cm->Meters","Mm->Meters","Miles->Meters","Meters->Inches","Meters->Km","Meters->Cm","Meters->Mm","Meters->Miles"]
@@ -38,26 +40,39 @@ struct ContentView: View {
     var body: some View {
         NavigationView {
             Form {
-                Section(header: "Conversion Category") {
+                Section(header: Text("Conversion Category")) {
                     Picker("Category", selection: $category) {
-                        ForEach(0...2) {
-                            Text("\()")
+                        ForEach(0..<categories.count) {
+                            Text("\(self.categories[$0])")
                         }
                     }
                 }
                 Section {
-                    Picker("Type", selection: $distanceConversion) {
-                        ForEach(0..<distanceConversions.count) {
-                            Text("\(self.distanceConversions[$0])")
+                    if category == 1 {
+                        Picker("Conversion", selection: $temperatureConversion) {
+                            ForEach(0..<temperatureConversions.count) {
+                                Text("\(self.temperatureConversions[$0])")
+                            }
+                        }
+                    } else {
+                        Picker("Conversion", selection: $distanceConversion) {
+                            ForEach(0..<distanceConversions.count) {
+                                Text("\(self.distanceConversions[$0])")
+                            }
                         }
                     }
                 }
                 
                 Section {
-                    Text("Conversion: \(distanceConversions[distanceConversion])")
+                    Text("Conversion:  \(distanceConversions[distanceConversion])")
                     TextField("Enter Value You Want To Convert", text: $conversionInputString )
                     Button(action: {
-                        DistanceConversionsProcess()
+                        switch distanceOrNot {
+                        case false:
+                            DistanceConversionsProcess()
+                        default:
+                            TemperatureConversionsProcess()
+                        }
                     }) {
                         Text("Convert")
                     }
@@ -98,7 +113,7 @@ struct ContentView: View {
     }
     func TemperatureConversionsProcess() {
         ConvertToDouble()
-        if
+        
     }
 }
 
