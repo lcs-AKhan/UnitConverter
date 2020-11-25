@@ -19,9 +19,7 @@ struct ContentView: View {
     // Category 0 = Distance, Category 1 = Temperature
     @State private var category = 0
     let categories = ["Distance","Temperature"]
-    
-    @State private var distanceOrNot: Bool = true
-    
+        
     @State private var distanceConversion = 1
     
     let distanceConversions = ["Inches->Meters","Km->Meters","Cm->Meters","Mm->Meters","Miles->Meters","Meters->Inches","Meters->Km","Meters->Cm","Meters->Mm","Meters->Miles"]
@@ -29,9 +27,7 @@ struct ContentView: View {
     @State private var temperatureConversion = 1
     
     let temperatureConversions = ["Celsius->Farenheit","Celsius->Kelvin","Farenheit->Kelvin","Farenheit->Celsius","Kelvin->Farenheit","Kelvin->Celsius"]
-    
-    @State private var chosenConverter = ""
-    
+        
     @State private var conversionInputString = ""
     @State private var conversionInput: Double = 0
     
@@ -62,12 +58,15 @@ struct ContentView: View {
                         }
                     }
                 }
-                
                 Section {
-                    Text("Conversion:  \(distanceConversions[distanceConversion])")
+                    if category == 0 {
+                        Text("Conversion:  \(distanceConversions[distanceConversion])")
+                    } else {
+                        Text("Conversion: \(temperatureConversions[temperatureConversion])")
+                    }
                     TextField("Enter Value You Want To Convert", text: $conversionInputString )
                     Button(action: {
-                        switch distanceOrNot {
+                        switch category == 1 {
                         case false:
                             DistanceConversionsProcess()
                         default:
