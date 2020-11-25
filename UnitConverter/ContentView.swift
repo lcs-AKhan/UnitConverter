@@ -43,7 +43,7 @@ struct ContentView: View {
                         }
                     }
                 }
-                Section {
+                Section(header: Text("Conversion Type")) {
                     if category == 1 {
                         Picker("Conversion", selection: $temperatureConversion) {
                             ForEach(0..<temperatureConversions.count) {
@@ -58,7 +58,7 @@ struct ContentView: View {
                         }
                     }
                 }
-                Section {
+                Section(header: Text("Convert Process")) {
                     if category == 0 {
                         Text("Conversion:  \(distanceConversions[distanceConversion])")
                     } else {
@@ -76,8 +76,8 @@ struct ContentView: View {
                         Text("Convert")
                     }
                 }
-                Section {
-                    Text("Output: \(conversionOutput, specifier: "%.2f")")
+                Section(header: Text("Conversion Output")) {
+                    Text("\(conversionOutput, specifier: "%.2f")")
                 }
             }
             .navigationTitle("Unit Converter")
@@ -112,7 +112,19 @@ struct ContentView: View {
     }
     func TemperatureConversionsProcess() {
         ConvertToDouble()
-        
+               if temperatureConversion == 0 {
+            conversionInput = (conversionOutput * 9/5) + 32
+        } else if temperatureConversion == 1 {
+            conversionOutput = conversionInput + 273.15
+        } else if temperatureConversion == 2 {
+            conversionOutput = (conversionInput - 32) * (5/9) + 273.15
+        } else if temperatureConversion == 3 {
+            conversionOutput = (conversionInput - 32) * (5/9)
+        } else if temperatureConversion == 4 {
+            conversionOutput = (conversionInput - 273.15) * (9/5) + 32
+        } else if temperatureConversion == 5 {
+            conversionOutput = conversionInput - 273.15
+        }
     }
 }
 
