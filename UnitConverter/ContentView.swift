@@ -16,10 +16,19 @@ struct Conversions: Identifiable {
 
 struct ContentView: View {
     
-    @State private var unitConversion = 1
+    // Category 0 = Distance, Category 1 = Temperature
+    @State private var category = 0
+    let categories = ["Distance","Temperature"]
     
-    let conversions = ["Inches->Meters","Km->Meters","Cm->Meters","Mm->Meters","Miles->Meters"]
-    @State private var chosenConverter = "Inches->Meters"
+    @State private var distanceConversion = 1
+    
+    let distanceConversions = ["Inches->Meters","Km->Meters","Cm->Meters","Mm->Meters","Miles->Meters","Meters->Inches","Meters->Km","Meters->Cm","Meters->Mm","Meters->Miles"]
+    
+    @State private var temperatureConversion = 1
+    
+    let temperatureConversions = ["Celsius->Farenheit","Celsius->Kelvin","Farenheit->Kelvin","Farenheit->Celsius","Kelvin->Farenheit","Kelvin->Celsius"]
+    
+    @State private var chosenConverter = ""
     
     @State private var conversionInputString = ""
     @State private var conversionInput: Double = 0
@@ -29,19 +38,26 @@ struct ContentView: View {
     var body: some View {
         NavigationView {
             Form {
+                Section(header: "Conversion Category") {
+                    Picker("Category", selection: $category) {
+                        ForEach(0...2) {
+                            Text("\()")
+                        }
+                    }
+                }
                 Section {
-                    Picker("Type", selection: $unitConversion) {
-                        ForEach(0..<conversions.count) {
-                            Text("\(self.conversions[$0])")
+                    Picker("Type", selection: $distanceConversion) {
+                        ForEach(0..<distanceConversions.count) {
+                            Text("\(self.distanceConversions[$0])")
                         }
                     }
                 }
                 
                 Section {
-                    Text("Conversion: \(conversions[unitConversion])")
+                    Text("Conversion: \(distanceConversions[distanceConversion])")
                     TextField("Enter Value You Want To Convert", text: $conversionInputString )
                     Button(action: {
-                        ConversionsProcess()
+                        DistanceConversionsProcess()
                     }) {
                         Text("Convert")
                     }
@@ -56,19 +72,33 @@ struct ContentView: View {
     func ConvertToDouble() {
         conversionInput = Double(conversionInputString) ?? 0
     }
-    func ConversionsProcess() {
+    func DistanceConversionsProcess() {
         ConvertToDouble()
-        if unitConversion == 0 {
+        if distanceConversion == 0 {
             conversionOutput = conversionInput * 0.0254
-        } else if unitConversion == 1 {
+        } else if distanceConversion == 1 {
             conversionOutput = conversionInput * 100
-        } else if unitConversion == 2 {
+        } else if distanceConversion == 2 {
             conversionOutput = conversionInput/100
-        } else if unitConversion == 3 {
+        } else if distanceConversion == 3 {
             conversionOutput = conversionInput/1000
-        } else if unitConversion == 4 {
+        } else if distanceConversion == 4 {
             conversionOutput = conversionInput * 1609.34
+        } else if distanceConversion == 5 {
+            conversionOutput = conversionInput * 39.3701
+        } else if distanceConversion == 6 {
+            conversionOutput = conversionInput/1000
+        } else if distanceConversion == 7 {
+            conversionOutput = conversionInput * 100
+        } else if distanceConversion == 8 {
+            conversionOutput = conversionInput * 1000
+        } else if distanceConversion == 9 {
+            conversionOutput = conversionInput * 0.000621371
         }
+    }
+    func TemperatureConversionsProcess() {
+        ConvertToDouble()
+        if
     }
 }
 
