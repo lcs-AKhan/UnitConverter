@@ -18,7 +18,7 @@ struct ContentView: View {
     
     // Category 0 = Distance, Category 1 = Temperature
     @State private var category = 0
-    let categories = ["Distance","Temperature"]
+    let categories = ["Distance","Temperature", "Weight"]
         
     @State private var distanceConversion = 1
     
@@ -28,6 +28,10 @@ struct ContentView: View {
     
     let temperatureConversions = ["Celsius->Farenheit","Celsius->Kelvin","Farenheit->Kelvin","Farenheit->Celsius","Kelvin->Farenheit","Kelvin->Celsius"]
         
+    let weightConversions = ["Lbs->Kg","Kg->Lbs","Kg->G","Kg->Tonne","Kg->Mg","G->Kg","Tonne->Kg","Mg->Kg"]
+    
+    @State private var weightConversion = 1
+    
     @State private var conversionInputString = ""
     @State private var conversionInput: Double = 0
     
@@ -50,10 +54,16 @@ struct ContentView: View {
                                 Text("\(self.temperatureConversions[$0])")
                             }
                         }
-                    } else {
+                    } else if category == 0 {
                         Picker("Conversion", selection: $distanceConversion) {
                             ForEach(0..<distanceConversions.count) {
                                 Text("\(self.distanceConversions[$0])")
+                            }
+                        }
+                    } else {
+                        Picker("Conversion", selection: $weightConversion) {
+                            ForEach(0..<weightConversions.count) {
+                                Text("\(self.weightConversions[$0])")
                             }
                         }
                     }
@@ -61,8 +71,10 @@ struct ContentView: View {
                 Section(header: Text("Convert Process")) {
                     if category == 0 {
                         Text("Conversion:  \(distanceConversions[distanceConversion])")
-                    } else {
+                    } else if category == 1 {
                         Text("Conversion: \(temperatureConversions[temperatureConversion])")
+                    } else {
+                        Text("Conversion: \(weightConversions[weightConversion])")
                     }
                     TextField("Enter Value You Want To Convert", text: $conversionInputString )
                     Button(action: {
@@ -125,6 +137,9 @@ struct ContentView: View {
         } else if temperatureConversion == 5 {
             conversionOutput = conversionInput - 273.15
         }
+    }
+    func WeightConversionsProcess() {
+        ConvertToDouble()
     }
 }
 
